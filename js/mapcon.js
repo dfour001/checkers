@@ -50,21 +50,23 @@ var boardcon = {
                     symbol: style
                 });
                 poly.id = id;
+                poly.location = [row, col]
+                poly.midpoint = [row + 0.5, col + 0.5]
                 poly.black = black;
                 poly.on('click', function() {
-                    console.log(poly.id, poly.black);
+                    console.log(poly.id, poly.location);
                 })
 
                 black = !black;
                 id++;
                 col++;
-                console.log(poly);
                 poly.addTo(spaces);
             };
             col = 1;
             row++;
         };
         
+
         
         return spaces
     },
