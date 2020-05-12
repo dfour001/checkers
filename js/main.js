@@ -9,7 +9,8 @@ var p2Name = 'Red Player';
 //     false = red (p2)
 var currentPlayer = true;
 
-
+// An object that keeps track of where each piece is on the board.
+var locator;
 
 function main() {
     // Set up game board
@@ -19,6 +20,11 @@ function main() {
     spaces.addTo(board);
     board.fitExtent(spaces.getExtent(), -0.5);
 
+    ///////////////////
+    // TEMP - DELETE //
+    ///////////////////
+    // These markers act as space labels and can be deleted later
+    /*
     let midpointMarkers = new maptalks.VectorLayer('midpointMarkers');
     spaces.forEach(function (p) {
         if (p.black == true) {
@@ -36,9 +42,17 @@ function main() {
         };
     })
     midpointMarkers.addTo(board);
+    */
+    //////////////
+    // END TEMP //
+    //////////////
+    
+    // Create locator.  This object keeps track of where each piece is on the board.
+    locator = gamecon.create_locator();
 
     // Put pieces on the board
-    let pieces = boardcon.create_pieces();
+    let pieces = boardcon.create_pieces(spaces);
+    pieces.addTo(board);
 
     // Set up game controller
 
