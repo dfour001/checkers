@@ -24,14 +24,14 @@ function main() {
     // TEMP - DELETE //
     ///////////////////
     // These markers act as space labels and can be deleted later
-    /*
+    
     let midpointMarkers = new maptalks.VectorLayer('midpointMarkers');
     spaces.forEach(function (p) {
         if (p.black == true) {
             let midMarker = new maptalks.Marker([p.midpoint[0]-0.25, p.midpoint[1]], {
                 symbol: {
                     'textFaceName': 'serif',
-                    'textName': p.location,
+                    'textName': p.id,
                     'textFill': 'white',
                     'textHorizontalAlignment': 'right',
                     'textSize': 20
@@ -42,7 +42,7 @@ function main() {
         };
     })
     midpointMarkers.addTo(board);
-    */
+    
     //////////////
     // END TEMP //
     //////////////

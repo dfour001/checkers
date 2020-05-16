@@ -22,7 +22,7 @@ var gamecon = {
             27: 'black',
             29: null,
             31: null,
-            33: null,
+            33: 'red',
             35: null,
             37: null,
             39: null,
@@ -50,5 +50,152 @@ var gamecon = {
         };
 
         return locator
+    },
+
+    find_valid_moves: function (locID, spaces, color, isKing = false) {
+        let oppositeColor;
+        if (color == "black") {
+            oppositeColor = "red";
+        } else {
+            oppositeColor = "black";
+        };
+
+
+        function get_space_coordinates(locID, spaces) {
+            let locCoord;
+            spaces.forEach(function (s) {
+                if (s.id == locID) {
+                    locCoord = s.location;
+                };
+            });
+
+            return locCoord
+        };
+
+
+        function get_space_id(locCoord, spaces) {
+            let locID;
+
+            spaces.forEach(function (s) {
+                if (s.location[0] == locCoord[0] && s.location[1] == locCoord[1]) {
+                    locID = s.id;
+                }
+            })
+
+            return locID;
+        };
+
+
+        function find_potential_moves(coords) {
+            // Spaces that can potentially be moved to in the following format:
+            // [space ID that piece can move to, space ID that is jumped over (or null)]
+            // Invalid moves are null (space occupied) or undefined (off the board)
+            let potentialMoves = {
+                upperLeft: [null, null],
+                upperRight: [null, null],
+                lowerLeft: [null, null],
+                lowerRight: [null, null]
+            };
+
+
+            // Find upper-left move
+            if (color == 'black' || isKing) {
+                let upperLeft = get_space_id([curCoords[0] - 1, curCoords[1] + 1], spaces);
+                if (locator[upperLeft] == null) {
+                    potentialMoves.upperLeft = [upperLeft, null];
+                };
+
+                // Check for jump opportunity
+                if (locator[upperLeft] == oppositeColor) {
+                    let upperLeftJump = get_space_id([curCoords[0] - 2, curCoords[1] + 2], spaces);
+                    if (locator[upperLeftJump] == null) {
+                        potentialMoves.upperLeft = [upperLeftJump, upperLeft];
+                    };
+                };
+            };
+
+            // Find upper-right move
+            if (color == 'black' || isKing) {
+                let upperRight = get_space_id([curCoords[0] + 1, curCoords[1] + 1], spaces);
+                if (locator[upperRight] == null) {
+                    potentialMoves.upperRight = [upperRight, null];
+                };
+                
+                // Check for jump opportunity
+                if (locator[upperRight] == oppositeColor) {
+                    let upperRightJump = get_space_id([curCoords[0] + 2, curCoords[1] + 2], spaces);
+                    if (locator[upperRightJump] == null) {
+                        potentialMoves.upperRight = [upperRightJump, upperRight];
+                    };
+                };
+            };
+
+            // Find lower-left move
+            if (color == 'red' || isKing) {
+                let lowerLeft = get_space_id([curCoords[0] - 1, curCoords[1] - 1], spaces);
+                if (locator[lowerLeft] == null) {
+                    potentialMoves.lowerLeft = [lowerLeft, null];
+                };
+                
+                // Check for jump opportunity
+                if (locator[lowerLeft] == oppositeColor) {
+                    let lowerLeftJump = get_space_id([curCoords[0] - 2, curCoords[1] - 2], spaces);
+                    if (locator[lowerLeftJump] == null) {
+                        potentialMoves.lowerLeft = [lowerLeftJump, lowerLeft];
+                    };
+                };
+            };
+
+            // Find lower-right move
+            if (color == 'red' || isKing) {
+                let lowerRight = get_space_id([curCoords[0] + 1, curCoords[1] - 1], spaces);
+                if (locator[lowerRight] == null) {
+                    potentialMoves.lowerRight = [lowerRight, null];
+                };
+                
+                // Check for jump opportunity
+                if (locator[lowerRight] == oppositeColor) {
+                    let lowerRightJump = get_space_id([curCoords[0] - 2, curCoords[1] - 2], spaces);
+                    if (locator[lowerRightJump] == null) {
+                        potentialMoves.lowerRight = [lowerRightJump, lowerRight];
+                    };
+                };
+            };
+
+            return potentialMoves
+        }
+
+        function set_spaces_selectable(spaces, potentialMoves) {
+            spaces.forEach(function (s) {
+                s.updateSymbol({
+                    lineWidth: 0
+                });
+
+                s.options.cursor = 'default'
+                if (s.id == potentialMoves.lowerLeft[0] || s.id == potentialMoves.lowerRight[0] || s.id == potentialMoves.upperLeft[0] || s.id == potentialMoves.upperRight[0]) {
+                    s.updateSymbol({
+                        lineWidth: 5,
+                        lineColor: 'red'
+                    });
+
+                    s.options.cursor = 'pointer'
+
+                    s.sourceSpace = locID;
+                    s.selectable = true;
+
+                };
+            });
+        };
+
+        // Coordinates of the space that the piece is currently
+        // located in
+        let curCoords = get_space_coordinates(locID, spaces);
+
+        let potentialMoves = find_potential_moves(curCoords);
+
+        set_spaces_selectable(spaces, potentialMoves);
+
+
+
     }
 }

@@ -59,6 +59,13 @@ var boardcon = {
                 poly.location = [col, row]
                 poly.midpoint = [col + 0.5, row + 0.5]
                 poly.black = black;
+                
+                // Controls if the space is currently selectable for piece movement
+                poly.selectable = false;
+                
+                // The source space ID that activated this space as selectable, ie the
+                // piece located in the source space can potentially move to this space
+                poly.sourceSpace;
 
                 // Event listener
                 poly.on('click', function () {
@@ -99,14 +106,14 @@ var boardcon = {
             'lineColor': 'black',
             'lineWidth': 2,
             'polygonFill': 'rgb(40,40,40)',
-            'polygonOpacity': 1
+            'polygonOpacity': 0.75
         }
 
         let redStyle = {
             'lineColor': 'black',
             'lineWidth': 2,
             'polygonFill': 'rgb(255,0,0)',
-            'polygonOpacity': 1
+            'polygonOpacity': 0.75
         }
 
         // For each space, check if it is black and that it has a piece in the locator.
@@ -134,6 +141,8 @@ var boardcon = {
                     }
                 });
 
+                piece.locID = s.id;
+                piece.on('click', function() {gamecon.find_valid_moves(piece.locID, spaces, color)});
                 piece.addTo(pieces);
             };
         });
