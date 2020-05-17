@@ -12,10 +12,14 @@ var currentPlayer = true;
 // An object that keeps track of where each piece is on the board.
 var locator;
 
+// Objects that will hold game pieces and spaces
+var pieces;
+var spaces;
+
 function main() {
     // Set up game board
     let board = boardcon.create_board(); // The map element
-    let spaces = boardcon.create_spaces(); // The spaces that pieces can be placed on
+    spaces = boardcon.create_spaces(); // The spaces that pieces can be placed on
 
     spaces.addTo(board);
     board.fitExtent(spaces.getExtent(), -0.5);
@@ -24,7 +28,7 @@ function main() {
     // TEMP - DELETE //
     ///////////////////
     // These markers act as space labels and can be deleted later
-    
+    /*
     let midpointMarkers = new maptalks.VectorLayer('midpointMarkers');
     spaces.forEach(function (p) {
         if (p.black == true) {
@@ -42,7 +46,7 @@ function main() {
         };
     })
     midpointMarkers.addTo(board);
-    
+    */
     //////////////
     // END TEMP //
     //////////////
@@ -51,7 +55,7 @@ function main() {
     locator = gamecon.create_locator();
 
     // Put pieces on the board
-    let pieces = boardcon.create_pieces(spaces);
+    pieces = boardcon.create_pieces(spaces);
     pieces.addTo(board);
 
     // Set up game controller

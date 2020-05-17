@@ -59,17 +59,25 @@ var boardcon = {
                 poly.location = [col, row]
                 poly.midpoint = [col + 0.5, row + 0.5]
                 poly.black = black;
-                
+
                 // Controls if the space is currently selectable for piece movement
                 poly.selectable = false;
-                
+
                 // The source space ID that activated this space as selectable, ie the
                 // piece located in the source space can potentially move to this space
-                poly.sourceSpace;
+                poly.sourceSpace = null;
+
+                // The space ID that will be jumped and removed from the game if this
+                // space is moved to.
+                poly.jumpSpace = null;
 
                 // Event listener
                 poly.on('click', function () {
                     console.log(poly.id, poly.location, locator[poly.id]);
+
+                    if (poly.selectable == true) {                        
+                        gamecon.move_piece(gamecon.get_piece_by_locID(poly.sourceSpace), poly.sourceSpace, poly.id, poly.midpoint, poly.jumpSpace);
+                    }
                 })
 
                 // Add space to spaces layer
@@ -106,14 +114,14 @@ var boardcon = {
             'lineColor': 'black',
             'lineWidth': 2,
             'polygonFill': 'rgb(40,40,40)',
-            'polygonOpacity': 0.75
+            'polygonOpacity': 1
         }
 
         let redStyle = {
             'lineColor': 'black',
             'lineWidth': 2,
             'polygonFill': 'rgb(255,0,0)',
-            'polygonOpacity': 0.75
+            'polygonOpacity': 1
         }
 
         // For each space, check if it is black and that it has a piece in the locator.
@@ -141,8 +149,15 @@ var boardcon = {
                     }
                 });
 
+                // Space polygon ID that this marker is located in (short for locationID)
                 piece.locID = s.id;
-                piece.on('click', function() {gamecon.find_valid_moves(piece.locID, spaces, color)});
+                piece.on('click', function () {
+                    console.log(piece.locID);
+                    let potentialMoves = gamecon.find_valid_moves(piece.locID, spaces, color);
+
+                    // Set space symbology as selectable
+                    gamecon.set_spaces_selectable(spaces, potentialMoves, piece.locID);
+                });
                 piece.addTo(pieces);
             };
         });
