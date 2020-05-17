@@ -13,16 +13,26 @@ var currentPlayer = 'black';
 var locator;
 
 // Objects that will hold game pieces and spaces
-var pieces;
+var board;
 var spaces;
+var pieces;
+
+// Default zoom based on screen resolution, calculated after adding board
+// to map in main().
+var defaultZoom = 4;
 
 function main() {
     // Set up game board
-    let board = boardcon.create_board(); // The map element
+    board = boardcon.create_board(); // The map element
     spaces = boardcon.create_spaces(); // The spaces that pieces can be placed on
 
     spaces.addTo(board);
     board.fitExtent(spaces.getExtent(), -0.5);
+    
+    // Get default zoom.  Wait a little bit to make sure zoom animation has completed
+    setTimeout(function () {
+        defaultZoom = board.getZoom();
+    }, 2000);
 
     ///////////////////
     // TEMP - DELETE //
@@ -50,7 +60,7 @@ function main() {
     //////////////
     // END TEMP //
     //////////////
-    
+
     // Create locator.  This object keeps track of where each piece is on the board.
     locator = gamecon.create_locator();
 
