@@ -6,4 +6,4 @@ For a while I've wanted to create a map-based javascript strategy game.  I creat
 
 Right now the game doesn't force jumps (I never liked that rule - it'll stay that way!), allow for multiple jumps in one turn (I plan to add that eventually...), or have AI.
 
-The nNotifications were created using <a href="https://github.com/jaredreich/notie" target="_blank">Notie</a>.
+The notifications were created using <a href="https://github.com/jaredreich/notie" target="_blank">Notie</a>.
