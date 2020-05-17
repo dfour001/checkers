@@ -24,7 +24,7 @@ var gamecon = {
             27: 'black',
             29: null,
             31: null,
-            33: 'red',
+            33: null,
             35: null,
             37: null,
             39: null,
@@ -72,7 +72,7 @@ var gamecon = {
                 lowerLeft: [null, null],
                 lowerRight: [null, null]
             };
-            
+
             console.log(coords);
 
             // Find upper-left move
@@ -161,7 +161,7 @@ var gamecon = {
                 locCoord = s.location;
             };
         });
-        
+
         return locCoord
     },
 
@@ -240,22 +240,40 @@ var gamecon = {
         }
     },
 
+    end_turn: function () {
+        if (currentPlayer == 'black') {
+            currentPlayer = 'red';
+        } else {
+            currentPlayer = 'black';
+        };
+
+        // Set piece cursors for the correct player
+        pieces.forEach(function (p) {
+            if (currentPlayer == p.options.color) {
+                p.options.cursor = 'pointer';
+            } else {
+                p.options.cursor = 'default';
+            }
+        })
+    },
+
     move_piece: function (piece, sourceSpace, targetSpace, targetCoords, jumpSpace) {
         // Move marker from source space coordinates to target space coordinates
         //piece.setCoordinates(targetCoords);
-        
+
         let sourceCoords = gamecon.get_space_coordinates(sourceSpace, spaces);
-        
+
         let xOffset = targetCoords[0] - (sourceCoords[0] + 0.5); // Add 0.5 to get midpoint
         let yOffset = targetCoords[1] - (sourceCoords[1] + 0.5); // Add 0.5 to get midpoint
         console.log([xOffset, yOffset]);
         piece.animate({
             translate: [xOffset, yOffset]
-        },{
-            duration: 500
+        }, {
+            duration: 500,
+            easing: 'inAndOut'
         });
 
-        
+
         // Change locator[sourceSpace] to null
         locator[sourceSpace] = null;
 
@@ -270,13 +288,49 @@ var gamecon = {
             let jumpPiece = gamecon.get_piece_by_locID(jumpSpace);
 
             // If jumping, set locator[jumpSpace] to null
-            jumpPiece.remove();
-            locator[jumpSpace] = null;
-        };
+            //jumpPiece.remove();
+            jumpPiece.animate({
+                    symbol: {
+                        polygonOpacity: 0
+                    }
+                }, {
+                    duration: 250,
+                    easing: 'inAndOut'
+                },
+                function (frame) {
+                    if (frame.state.playState === 'finished') {
+                        jumpPiece.remove();
+                    }
+                });
+        locator[jumpSpace] = null;
+    };
 
-        // Reset spaces to unselectable
-        gamecon.reset_spaces(spaces);
+    // Reset spaces to unselectable
+    gamecon.reset_spaces(spaces);
+        
+    // Check if piece is now king
+        console.log(piece.isKing, piece.options.color, targetCoords[1]);
+    if (!piece.isKing && piece.options.color == 'black' && targetCoords[1] == 9.5) {
+        alert('King me!');
+        piece.isKing = true;
+        piece.updateSymbol( {
+            lineColor: 'rgb(255,255,255)'
+        });
+    };
+        
+    if (!piece.isKing && piece.options.color == 'red' && targetCoords[1] == 1.5) {
+        alert('King me!');
+        piece.isKing = true;
+        piece.updateSymbol( {
+            lineColor: 'rgb(255,255,255)'
+        });
+    };
 
-        console.log("Done");
-    }
+    // Check if turn is done
+
+
+    // Change turn
+    gamecon.end_turn();
+    console.log("Done");
+}
 }

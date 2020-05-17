@@ -7,7 +7,7 @@ var p2Name = 'Red Player';
 // Current player:
 //     true = black (p1)
 //     false = red (p2)
-var currentPlayer = true;
+var currentPlayer = 'black';
 
 // An object that keeps track of where each piece is on the board.
 var locator;

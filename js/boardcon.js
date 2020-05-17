@@ -75,7 +75,7 @@ var boardcon = {
                 poly.on('click', function () {
                     console.log(poly.id, poly.location, locator[poly.id]);
 
-                    if (poly.selectable == true) {                        
+                    if (poly.selectable == true) {
                         gamecon.move_piece(gamecon.get_piece_by_locID(poly.sourceSpace), poly.sourceSpace, poly.id, poly.midpoint, poly.jumpSpace);
                     }
                 })
@@ -151,12 +151,18 @@ var boardcon = {
 
                 // Space polygon ID that this marker is located in (short for locationID)
                 piece.locID = s.id;
-                piece.on('click', function () {
-                    console.log(piece.locID);
-                    let potentialMoves = gamecon.find_valid_moves(piece.locID, spaces, color);
 
-                    // Set space symbology as selectable
-                    gamecon.set_spaces_selectable(spaces, potentialMoves, piece.locID);
+                piece.isKing = false;
+
+                piece.on('click', function () {
+                    if (currentPlayer == piece.options.color) {
+                        let potentialMoves = gamecon.find_valid_moves(piece.locID, spaces, color, piece.isKing);
+
+                        // Set space symbology as selectable
+                        gamecon.set_spaces_selectable(spaces, potentialMoves, piece.locID);
+                    } else {
+                        alert('It is ' + currentPlayer + "'s turn.");
+                    };
                 });
                 piece.addTo(pieces);
             };
