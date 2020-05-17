@@ -113,7 +113,7 @@ var boardcon = {
         let blackStyle = {
             'lineColor': 'black',
             'lineWidth': 2,
-            'polygonFill': 'rgb(40,40,40)',
+            'polygonFill': 'rgb(60,60,60)',
             'polygonOpacity': 1
         }
 
@@ -161,7 +161,13 @@ var boardcon = {
                         // Set space symbology as selectable
                         gamecon.set_spaces_selectable(spaces, potentialMoves, piece.locID);
                     } else {
-                        alert('It is ' + currentPlayer + "'s turn.");
+                        notie.alert({
+                            type: 'error',
+                            text: 'It is ' + currentPlayer + "'s turn.",
+                            stay: false,
+                            time: 3,
+                            position: 'bottom'
+                        });
                     };
                 });
                 piece.addTo(pieces);

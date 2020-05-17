@@ -1,12 +1,6 @@
 // Globals
 
-// Player names
-var p1Name = 'Black Player';
-var p2Name = 'Red Player';
-
 // Current player:
-//     true = black (p1)
-//     false = red (p2)
 var currentPlayer = 'black';
 
 // An object that keeps track of where each piece is on the board.
@@ -28,7 +22,7 @@ function main() {
 
     spaces.addTo(board);
     board.fitExtent(spaces.getExtent(), -0.5);
-    
+
     // Get default zoom.  Wait a little bit to make sure zoom animation has completed
     setTimeout(function () {
         defaultZoom = board.getZoom();
@@ -67,8 +61,6 @@ function main() {
     // Put pieces on the board
     pieces = boardcon.create_pieces(spaces);
     pieces.addTo(board);
-
-    // Set up game controller
 
 }
 

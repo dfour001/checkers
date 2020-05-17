@@ -278,6 +278,16 @@ var gamecon = {
                         p.options.cursor = 'default';
                     }
                 })
+            
+            setTimeout(function() {
+                notie.alert({
+                            type: 'information',
+                            text: currentPlayer.charAt(0).toUpperCase() + currentPlayer.slice(1) + "'s Turn",
+                            stay: false,
+                            time: 3,
+                            position: 'top'
+                        });
+            }, 1100);
             },
 
             move_piece: function (piece, sourceSpace, targetSpace, targetCoords, jumpSpace) {
@@ -334,7 +344,13 @@ var gamecon = {
                 // Check if piece is now king
                 console.log(piece.isKing, piece.options.color, targetCoords[1]);
                 if (!piece.isKing && piece.options.color == 'black' && targetCoords[1] == 9.5) {
-                    alert('King me!');
+                    notie.alert({
+                            type: 'success',
+                            text: 'King!',
+                            stay: false,
+                            time: 3,
+                            position: 'bottom'
+                        });
                     piece.isKing = true;
                     piece.updateSymbol({
                         lineColor: 'rgb(255,255,255)'
@@ -342,7 +358,13 @@ var gamecon = {
                 };
 
                 if (!piece.isKing && piece.options.color == 'red' && targetCoords[1] == 1.5) {
-                    alert('King me!');
+                    notie.alert({
+                            type: 'success',
+                            text: 'King!',
+                            stay: false,
+                            time: 3,
+                            position: 'bottom'
+                        });
                     piece.isKing = true;
                     piece.updateSymbol({
                         lineColor: 'rgb(255,255,255)'
