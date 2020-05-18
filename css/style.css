@@ -8,7 +8,7 @@ body {
     bottom: 0px;
     left: 0px;
     right: 0px;
-    background-image: url(/img/space2.jpg);
+    background-image: url("../img/space2.jpg");
     background-repeat: repeat;
     background-size: cover;
 }
