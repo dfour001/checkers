@@ -125,7 +125,7 @@ var boardcon = {
         }
 
         // For each space, check if it is black and that it has a piece in the locator.
-        // The check if the space should have a red or black piece, create the appropriate
+        // Then check if the space should have a red or black piece, create the appropriate
         // piece, then add to the pieces vector layer.
         spaces.forEach(function (s) {
             if (s.black == true && locator[s.id] != undefined) {
